@@ -1,14 +1,11 @@
 import { test, expect } from '@playwright/test';
-import data from '../utils/testData.json';
+import { LoginPage } from '../pages/LoginPage';
 
-for (const user of data.users) {
-  test(`Login test for ${user.username}`, async ({ page }) => {
-    await page.goto('/');
+test('Login test for standard_user', async ({ page }) => {
+  const login = new LoginPage(page);
 
-    await page.fill('#user-name', user.username);
-    await page.fill('#password', user.password);
-    await page.click('#login-button');
+  await login.goto();
+  await login.login('standard_user', 'secret_sauce');
 
-    await expect(page).toHaveURL(/inventory/);
-  });
-}
+  await expect(page).toHaveURL(/inventory/);
+});
