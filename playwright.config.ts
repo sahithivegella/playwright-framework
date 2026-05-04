@@ -19,7 +19,6 @@ export default defineConfig({
     actionTimeout: 10000,
     navigationTimeout: 15000,
 
-    screenshot: 'only-on-failure',
   },
 
   projects: [
@@ -29,6 +28,7 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         screenshot: 'on',
         video: 'on',
+        trace: 'on',
       },
     },
   ],
