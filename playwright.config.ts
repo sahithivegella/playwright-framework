@@ -3,9 +3,8 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './tests',
 
-  fullyParallel: false,
-  retries: 1,
-  workers: 1,
+  fullyParallel: true,
+  workers: 3,
 
   reporter: [['html'], ['list']],
 

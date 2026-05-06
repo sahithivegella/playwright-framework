@@ -1,0 +1,53 @@
+[
+  {
+    "username": "standard_user",
+    "password": "secret_sauce",
+    "type": "positive"
+  },
+
+  {
+    "username": "invalid_user",
+    "password": "secret_sauce",
+    "error": "Epic sadface: Username and password do not match any user",
+    "type": "negative"
+  },
+
+  {
+    "username": "standard_user",
+    "password": "wrong_password",
+    "error": "Epic sadface: Username and password do not match any user",
+    "type": "negative"
+  },
+
+  {
+    "username": "",
+    "password": "",
+    "error": "Epic sadface: Username is required",
+    "type": "negative"
+  },
+
+  {
+    "username": "locked_out_user",
+    "password": "secret_sauce",
+    "error": "Epic sadface: Sorry, this user has been locked out.",
+    "type": "negative"
+  },
+
+  {
+    "username": "performance_glitch_user",
+    "password": "secret_sauce",
+    "type": "performance"
+  },
+
+  {
+    "username": "problem_user",
+    "password": "secret_sauce",
+    "type": "problem"
+  },
+
+  {
+    "username": "visual_user",
+    "password": "secret_sauce",
+    "type": "visual"
+  }
+]

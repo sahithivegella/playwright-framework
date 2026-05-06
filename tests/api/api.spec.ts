@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { createUser } from '../utils/apiHelper';
+import { createUser } from '../../utils/apiHelper';
 
 test('API Test - Validate Name', async () => {
   const user = await createUser();
