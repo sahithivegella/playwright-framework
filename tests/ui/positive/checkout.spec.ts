@@ -1,14 +1,12 @@
 import { test, expect } from '@playwright/test';
 
 import { LoginPage } from '../../../pages/LoginPage';
-
 import { ProductPage } from '../../../pages/ProductPage';
-
 import { CheckoutPage } from '../../../pages/CheckoutPage';
 
 test('Checkout Flow', async ({ page }) => {
 
-    // Login First
+    // Login
     const login = new LoginPage(page);
 
     await login.goto();
@@ -23,11 +21,15 @@ test('Checkout Flow', async ({ page }) => {
 
     const checkout = new CheckoutPage(page);
 
-    await product.addFirstProduct();
+    // Add Product
+    await product.addProduct(
+        'Sauce Labs Backpack'
+    );
 
-    await product.goToCart();
+    // Open Cart
+    await product.openCart();
 
-    // Checkout Actions
+    // Checkout Flow
     await checkout.startCheckout();
 
     await checkout.fillDetails();
