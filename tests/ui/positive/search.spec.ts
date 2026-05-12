@@ -1,85 +1,33 @@
 import { test, expect } from '@playwright/test';
-
 import { LoginPage } from '../../../pages/LoginPage';
+import { ProductPage } from '../../../pages/ProductPage';
 
-import { SearchPage } from '../../../pages/SearchPage';
+test.describe('Filters and Sorting', () => {
+  test.beforeEach(async ({ page }) => {
+    const login = new LoginPage(page);
+    await login.goto();
+    await login.login('standard_user', 'secret_sauce');
+  });
 
-test.describe('Search and Sorting Tests', () => {
+  test('Sort by price low to high', async ({ page }) => {
+    const product = new ProductPage(page);
 
-    test(
-        'Verify products displayed after login',
-        async ({ page }) => {
+    await product.sortProducts('lohi');
 
-            const login = new LoginPage(page);
+    const prices = await product.getProductPrices();
+    const sortedPrices = [...prices].sort((a, b) => a - b);
 
-            const search = new SearchPage(page);
+    expect(prices).toEqual(sortedPrices);
+  });
 
-            await login.goto();
+  test('Sort by name A to Z', async ({ page }) => {
+    const product = new ProductPage(page);
 
-            await login.login(
-                'standard_user',
-                'secret_sauce'
-            );
+    await product.sortProducts('az');
 
-            await search.verifyProductsDisplayed();
-        }
-    );
+    const names = await product.getProductNames();
+    const sortedNames = [...names].sort((a, b) => a.localeCompare(b));
 
-    test(
-        'Verify low to high sorting',
-        async ({ page }) => {
-
-            const login = new LoginPage(page);
-
-            const search = new SearchPage(page);
-
-            await login.goto();
-
-            await login.login(
-                'standard_user',
-                'secret_sauce'
-            );
-
-            await search.sortProducts(
-                'lohi'
-            );
-
-            const prices = await search.getAllPrices();
-
-            const sortedPrices = [...prices].sort(
-                (a, b) => a - b
-            );
-
-            expect(prices).toEqual(sortedPrices);
-        }
-    );
-
-    test(
-        'Verify high to low sorting',
-        async ({ page }) => {
-
-            const login = new LoginPage(page);
-
-            const search = new SearchPage(page);
-
-            await login.goto();
-
-            await login.login(
-                'standard_user',
-                'secret_sauce'
-            );
-
-            await search.sortProducts(
-                'hilo'
-            );
-
-            const prices = await search.getAllPrices();
-
-            const sortedPrices = [...prices].sort(
-                (a, b) => b - a
-            );
-
-            expect(prices).toEqual(sortedPrices);
-        }
-    );
+    expect(names).toEqual(sortedNames);
+  });
 });

@@ -9,6 +9,9 @@ export class ProductPage {
 
   private cartBadge = '.shopping_cart_badge';
   private cartLink = '.shopping_cart_link';
+  private sortDropdown = '.product_sort_container';
+  private inventoryNames = '.inventory_item_name';
+  private inventoryPrices = '.inventory_item_price';
 
   async addProduct(productName: string) {
     const item = this.inventoryItem(productName);
@@ -45,5 +48,22 @@ export class ProductPage {
 
   async openCart() {
     await this.page.locator(this.cartLink).click();
+  }
+
+  async sortProducts(option: 'lohi' | 'hilo' | 'az' | 'za') {
+    await this.page.selectOption(this.sortDropdown, option);
+  }
+
+  async getProductNames() {
+    return await this.page.locator(this.inventoryNames).allTextContents();
+  }
+
+  async getProductPrices() {
+    const prices = await this.page.locator(this.inventoryPrices).allTextContents();
+    return prices.map((price) => parseFloat(price.replace('$', '')));
+  }
+
+  async verifyProductsVisible() {
+    await expect(this.page.locator('.inventory_item')).toHaveCount(6);
   }
 }

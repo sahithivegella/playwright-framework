@@ -1,45 +1,25 @@
 import { test, expect } from '@playwright/test';
-
 import { LoginPage } from '../../../pages/LoginPage';
 import { ProductPage } from '../../../pages/ProductPage';
 import { CheckoutPage } from '../../../pages/CheckoutPage';
 
-test('Checkout Flow', async ({ page }) => {
+test('Complete checkout with valid data', async ({ page }) => {
+  const login = new LoginPage(page);
+  const product = new ProductPage(page);
+  const checkout = new CheckoutPage(page);
 
-    // Login
-    const login = new LoginPage(page);
+  await login.goto();
+  await login.login('standard_user', 'secret_sauce');
 
-    await login.goto();
+  await product.addProduct('Sauce Labs Backpack');
+  await product.openCart();
 
-    await login.login(
-        'standard_user',
-        'secret_sauce'
-    );
+  await checkout.startCheckout();
+  await checkout.fillDetails('Sahithi', 'Vegella', '500001');
 
-    // Product Actions
-    const product = new ProductPage(page);
+  await checkout.verifyOrderSummaryVisible();
+  await checkout.verifyPriceCalculation();
 
-    const checkout = new CheckoutPage(page);
-
-    // Add Product
-    await product.addProduct(
-        'Sauce Labs Backpack'
-    );
-
-    // Open Cart
-    await product.openCart();
-
-    // Checkout Flow
-    await checkout.startCheckout();
-
-    await checkout.fillDetails();
-
-    await checkout.finishOrder();
-
-    // Validation
-    await expect(
-        page.locator('.complete-header')
-    ).toHaveText(
-        'Thank you for your order!'
-    );
+  await checkout.finishOrder();
+  await checkout.verifyConfirmation();
 });
